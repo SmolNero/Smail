@@ -57,13 +57,21 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	
-	
 	if req.Weight <= 0 {
 		http.Error(w, "Invalid weight", http.StatusBadRequest)
 		return
 	}
 
+	// Create example response (We'll integrate with USPS API later)
+	repsonse := ShippingResponse{
+		EstimatedCost: 15.99, // Placeholder
+		DeliveryDays:  3,     // Placeholder
+		ServiceType:   "Priority Mail",
+		Timestamp:	   time.Now()
 
+		
+
+	}
 
 
 
@@ -73,6 +81,5 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 
 }
 	
-
 
 
