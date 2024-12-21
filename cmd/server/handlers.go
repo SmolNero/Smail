@@ -51,8 +51,11 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return
 	}
-
-	if req.FromZipCode
+	// Validate request data
+	if.FromZipCode == "" || req.ToZipCode == "" {
+		http.Error(w, "Missing zip code", http.StatusBadRequest)
+		return
+	}
 
 
 
