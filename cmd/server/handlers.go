@@ -56,6 +56,12 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing zip code", http.StatusBadRequest)
 		return
 	}
+	
+	
+	if req.Weight <= 0 {
+		http.Error(w, "Invalid weight", http.StatusBadRequest)
+		return
+	}
 
 
 
