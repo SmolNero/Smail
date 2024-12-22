@@ -1,4 +1,4 @@
-// cmd/server/handlers.go
+
 	
 package main
 
@@ -68,16 +68,25 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		DeliveryDays:  3,     // Placeholder
 		ServiceType:   "Priority Mail",
 		Timestamp:	   time.Now()
-
-		
-
 	}
 
+	// Set content type header
+	w.Header().set("Content-Type", "application/json")
 
-
+	//Send response
+	json.NewEncoder(w).Encode(response)
 
 
 }
+
+func heandleHealthCheck(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(map[string]string{
+		"status": "healthy",
+		"timw": time.Now().String(),
+	})
+}
+
+
 	
 
 
