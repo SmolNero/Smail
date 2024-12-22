@@ -1,5 +1,3 @@
-
-	
 package main
 
 import(
@@ -52,7 +50,7 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Validate request data
-	if.FromZipCode == "" || req.ToZipCode == "" {
+	if req.FromZipCode == "" || req.ToZipCode == "" {
 		http.Error(w, "Missing zip code", http.StatusBadRequest)
 		return
 	}
