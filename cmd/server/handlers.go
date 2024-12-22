@@ -77,8 +77,6 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 
 
 
-
-
 }
 	
 
