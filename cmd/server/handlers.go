@@ -7,14 +7,20 @@ import (
 	"encoding/json" // For working with JSON data
 	"net/http" // for web server functionality
 	"time" //For working with dates/times
+	"string"
+	"log"
 )
 
-// REQUEST STRUCTURE
+
+// constants for security
+const  (
+	MaxRequestSize = 1024 * 1024 // 1MB max request size
+	MaxUserNameLen = 50
+	MinUserbaneLen = 3
+	MaxContentLen = 8
+ )
 
 // ShippingRequest represents our API response
-
-
-// TODO MAKE HANDLER ROBUST - KEEP IT SIMPLE
 type HomeRequest struct{
 	UserName string `json:"username"`
 	MessageType string `json:"message_type"`
@@ -23,8 +29,6 @@ type HomeRequest struct{
 	RequestID string `json:"requesst_id"`
 	Timestamp string `json:"timestamp"`
 }
-
-
 
 type ShippingRequest struct {
 	FromZipCode string  `json:"from_zip"` // where package STARTS
@@ -42,6 +46,14 @@ type ShippingResponse struct {
 	Timestamp     time.Time `json:"timestamp"`   // When calculation was made
 }
 
+
+// validateContentType ensures JSON content type
+func validateContentType(r *http.Request) bool{
+	contetType := r.Header.Get("Content-Type")
+	return strings.Contains(contentType, "application/json")
+}
+
+
 // handleHome is our root endpoint handler
 // w : where we write our response to the user
 // r : contains all information aboute the incoming request
@@ -51,9 +63,6 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return  // Stop processing if wrong method
 	}
-
-	 // Tell the browser/client we're sending JSON data
-	w.Header().Set("Content-Type","application/json")
 
 	 // Set JSON content type header before writing any response
 	json.NewEncoder(w).Encode(map[string]string{
@@ -65,6 +74,9 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 
 // func handleShippingCalculate calculates shipping costs
 func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
+	 // Set content type header
+	w.Header().Set("Content-Type", "application/json")
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -96,9 +108,6 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		ServiceType:   "Priority Mail",
 		Timestamp:     time.Now(),
 	}
-
-	// Set content type header
-	w.Header().Set("Content-Type", "application/json")
 
 	//Send response
 	json.NewEncoder(w).Encode(response)
