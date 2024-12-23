@@ -26,7 +26,10 @@ type ShippingResponse struct {
 }
 
 // handleHome is our root endpoint handler
+// w : where we write our response to the user
+// r : contains all information aboute the incoming request
 func handleHome(w http.ResponseWriter, r *http.Request) {
+	 // Check if request method is GET
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
