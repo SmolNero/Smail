@@ -1,6 +1,6 @@
 # Smail 🐌📮
 
-![Smail Logo](assests/logo.png)
+![Smail Logo](assets/logo.png)
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Go Version](https://img.shields.io/badge/go-1.21+-00ADD8.svg)
