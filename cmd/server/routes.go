@@ -9,6 +9,6 @@ import (
 func setupRoutes() {
 
 http.HandleFunc("/", handleHome)
-http.HandleFunc("/api/shipping/calculate", handleShippingsCalculate)
+http.HandleFunc("/api/shipping/calculate", handleShippingCalculate)
 http.HandleFunc("/health", handleHealthCheck)	
 }

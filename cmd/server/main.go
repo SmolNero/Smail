@@ -5,7 +5,7 @@ package main
 // This line says "this file is part of our main program"
 import (
 	"fmt" // printing is for printing things
-	"log" // log is for printing important messages
+	//"log" // log is for printing important messages
 	"net/http" // lets create web servers
 )
 
@@ -33,10 +33,12 @@ func main() {
 	// When someone visits our website (/) show them the home page
 	setupRoutes()
 
+	/*
 	// Start our web server on port 8080
 	port := ":8080"
 	fmt.Println("sever is ready! Visit http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
+	*/
 }
 
 
