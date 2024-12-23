@@ -12,6 +12,20 @@ import (
 // REQUEST STRUCTURE
 
 // ShippingRequest represents our API response
+
+
+// TODO
+type HomeRequest struct{
+	string `json:"username"`
+	string `json:"message_type"`
+	string `json:"content"`
+	string `json:"email"`
+	string `json:"requesst_id"`
+	string `json:"timestamp"`
+}
+
+
+
 type ShippingRequest struct {
 	FromZipCode string  `json:"from_zip"` // where package STARTS
 	ToZipCode   string  `json:"to_zip"`   // Where package goes
