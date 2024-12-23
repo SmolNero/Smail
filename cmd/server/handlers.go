@@ -14,14 +14,14 @@ import (
 // ShippingRequest represents our API response
 
 
-// TODO
+// TODO MAKE HANDLER ROBUST - KEEP IT SIMPLE
 type HomeRequest struct{
-	string `json:"username"`
-	string `json:"message_type"`
-	string `json:"content"`
-	string `json:"email"`
-	string `json:"requesst_id"`
-	string `json:"timestamp"`
+	UserName string `json:"username"`
+	MessageType string `json:"message_type"`
+	Content string `json:"content"`
+	Email string `json:"email"`
+	RequestID string `json:"requesst_id"`
+	Timestamp string `json:"timestamp"`
 }
 
 
