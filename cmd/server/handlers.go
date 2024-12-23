@@ -1,19 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"encoding/json"
-	"net/http"
-	"time"
+	"encoding/json" // For working with JSON data
+	"net/http" // for web server functionality
+	"time" //For working with dates/times
 )
+
+// REQUEST STRUCTURE
 
 // ShippingRequest represents our API response
 type ShippingRequest struct {
-	FromZipCode string  `json:"from_zip"`
-	ToZipCode   string  `json:"to_zip"`
-	Weight      float64 `json:"weight"`
-	PackageType string  `json:"package_type"`
+	FromZipCode string  `json:"from_zip"` // where package STARTS
+	ToZipCode   string  `json:"to_zip"`   // Where package goes
+	Weight      float64 `json:"weight"`   // package weight (can have decimals)
+	PackageType string  `json:"package_type"`   //type of package
 }
+
+// RESPONSE STRUCTURE
 
 type ShippingResponse struct {
 	EstimatedCost float64   `json:"estimated_cost"`
@@ -24,17 +27,16 @@ type ShippingResponse struct {
 
 // handleHome is our root endpoint handler
 func handleHome(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Fprintf(w, "Thank you, Welcome to Smail🐌📮")
-	fmt.Fprintf(w, "Your friendly optimization journey begins")
-
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
+	w.Header().Set("Content-Type","application/json")
+
+	 // Set JSON content type header before writing any response
 	json.NewEncoder(w).Encode(map[string]string{
-		"message": "Welcome to Smail API",
+		"message": "Thank you, Welcome to Smail🐌📮 - Your friendly optimization journey begins",
 		"version": "1.0",
 		"status":  "healthy",
 	})
