@@ -65,25 +65,49 @@ func validateHomeRequest(req HomeRequest) []string{
 		errors = append(errors, "username must be at least 3 characters")
 	} else if len(req.UserNames) > MaxUsernameLen {
 		erros = append(errors, "useername must not exceed 50 characters")
-
 	}
 
 
+	//MessageType validation
+	if req.MessageType != "" {
+		validTypes := []string{"greeting", "update", "feedback"}
+		isValid := false
+		for _, t := range validTypes {
+			if req.MessageType == t {
+				isValid = true
+				break
+			}
+		}
 
+		if !isValid {
+			errors = append(errors, "message_type must be one of: greeting, update, feedback")
+		}
+	}
 
+	// content validation
+	if len(req.Content) > MaxContentLen {
+		errors = append(errors, "content must not exceed 1000 characters") 
 
+	}
 
+	// Email validation (basic)
+	if req.Email != "" {
+		if !strings.Contains(req.Email, "@") || !strings.Contains(req.Email, ""){
+			errors = append(errors, "invalid email format")
+
+	}
 }
 
+	//RequestID Validation
+	if req.RequestID == "" {
+		errors = append(errors, "request_id is required")
+	} else if len(req.RequestID) < MinRequestIDlen {
+		errors = append(errors, "request_id must be at least 8 characters")
+	}
 
 
-
-
-
-
-
-
-
+	return errors
+}
 
 
 // handleHome is our root endpoint handler
