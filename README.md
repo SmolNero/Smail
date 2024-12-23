@@ -1,9 +1,5 @@
 # Smail 🐌📮
 
-
-![Smail Logo](logo.png)
-
-
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Go Version](https://img.shields.io/badge/go-1.21+-00ADD8.svg)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow.svg)
