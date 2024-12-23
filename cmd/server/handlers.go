@@ -1,26 +1,25 @@
 package main
 
-import(
+import (
 	"encoding/json"
 	"net/http"
 	"time"
- )
+)
 
-//ShippingRequest represents our API response
+// ShippingRequest represents our API response
 type ShippingRequest struct {
-	FromZipCode string `json:"from_zip"`	
-	ToZipCode string `json:"to_zip"`
-	Weight float64 `json:"weight"`
-	PackageType string `json:"package_type"`
- } 
+	FromZipCode string  `json:"from_zip"`
+	ToZipCode   string  `json:"to_zip"`
+	Weight      float64 `json:"weight"`
+	PackageType string  `json:"package_type"`
+}
 
 type ShippingResponse struct {
- 	EstimatedCost float64 `json:"estimated_cost"`
- 	DeliveryDays int `json:"delivery_days"`
- 	ServiceType string `json:"service_type"`
- 	Timestamp time.Time `json:"timestamp"`
-
- } 
+	EstimatedCost float64   `json:"estimated_cost"`
+	DeliveryDays  int       `json:"delivery_days"`
+	ServiceType   string    `json:"service_type"`
+	Timestamp     time.Time `json:"timestamp"`
+}
 
 // handleHome is our root endpoint handler
 func handleHome(w http.ResponseWriter, r *http.Request) {
@@ -30,13 +29,13 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(map[string]string{
-		"message":"Welcome to Smail API",
-		"version":"1.0",		
-		"status":"healthy",
+		"message": "Welcome to Smail API",
+		"version": "1.0",
+		"status":  "healthy",
 	})
- }
+}
 
-//func handleShippingCalculate calculates shipping costs
+// func handleShippingCalculate calculates shipping costs
 func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -54,7 +53,7 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing zip code", http.StatusBadRequest)
 		return
 	}
-	
+
 	if req.Weight <= 0 {
 		http.Error(w, "Invalid weight", http.StatusBadRequest)
 		return
@@ -65,7 +64,7 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		EstimatedCost: 15.99, // Placeholder
 		DeliveryDays:  3,     // Placeholder
 		ServiceType:   "Priority Mail",
-		Timestamp:	   time.Now(),
+		Timestamp:     time.Now(),
 	}
 
 	// Set content type header
@@ -76,14 +75,9 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func heandleHealthCheck(w http.ResponseWriter, r *http.Request) {
+func handleHealthCheck(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"status": "healthy",
-		"timw": time.Now().String(),
+		"time":   time.Now().String(),
 	})
 }
-
-
-	
-
-
