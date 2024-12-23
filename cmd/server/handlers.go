@@ -17,7 +17,7 @@ type ShippingRequest struct {
 type ShippingResponse struct {
  	EstimatedCost float64 `json:"estimated_cost"`
  	DeliveryDays int `json:"delivery_days"`
- 	ServiceType string `json:"sercice_type"`
+ 	ServiceType string `json:"service_type"`
  	Timestamp time.Time `json:"timestamp"`
 
  } 
@@ -40,12 +40,12 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		returna
+		return
 	}
 
 	//Parsings incoming JSON request
 	var req ShippingRequest
-	if err := json.NewEncoder(r.Body).Decode(&req); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return
 	}
@@ -61,7 +61,7 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create example response (We'll integrate with USPS API later)
-	repsonse := ShippingResponse{
+	response := ShippingResponse{
 		EstimatedCost: 15.99, // Placeholder
 		DeliveryDays:  3,     // Placeholder
 		ServiceType:   "Priority Mail",
@@ -69,11 +69,10 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Set content type header
-	w.Header().set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 
 	//Send response
 	json.NewEncoder(w).Encode(response)
-
 
 }
 

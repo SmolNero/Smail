@@ -6,7 +6,6 @@ import (
 	"net/http"
 )
 
-
 func setupRoutes() {
 
 http.HandleFunc("/", handleHome)

@@ -31,12 +31,9 @@ func main() {
 	fmt.Println("Smail🐌📮 - a friendly service" )
 
 	// When someone visits our website (/) show them the home page
-	http.HandleFunc("/", handleHome)
-	http.HandleFunc("/api/shipping/calculate", handleShippingCalculate)
-	http.HandleFunc("/health", handleHealthCheck)	
+	setupRoutes()
 
 	// Start our web server on port 8080
-
 	port := ":8080"
 	fmt.Println("sever is ready! Visit http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
