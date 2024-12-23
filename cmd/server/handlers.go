@@ -49,9 +49,41 @@ type ShippingResponse struct {
 
 // validateContentType ensures JSON content type
 func validateContentType(r *http.Request) bool{
-	contetType := r.Header.Get("Content-Type")
+	contentType := r.Header.Get("Content-Type")
 	return strings.Contains(contentType, "application/json")
 }
+
+
+// validateHomeRequest validates home endpoint requests
+func validateHomeRequest(req HomeRequest) []string{
+	var errors []string
+
+	// username validation
+	if req.UserName == "" {
+		errors = append(errors, "username is required")
+	} else if len(req.UserName) < MinUsernameLen {
+		errors = append(errors, "username must be at least 3 characters")
+	} else if len(req.UserNames) > MaxUsernameLen {
+		erros = append(errors, "useername must not exceed 50 characters")
+
+	}
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 // handleHome is our root endpoint handler
