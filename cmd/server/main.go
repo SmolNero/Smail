@@ -14,24 +14,7 @@ import (
 // r *http.Request - This contains all the info about whos visiting
 // w and r are conventional names in Go for response writer and request
 
-
-
-/// THE MESSAGING HERE MIGHT NEED TO go in handleHome in handler.go
-/*
-func handleHome(w http.ResponseWriter, r *http.Request) {
-
-	// when someone visits, send them a message
-	// Fprintf is a formatted print function that writes to a writer interface
-
-	fmt.Fprintf(w, "Thank you, Welcome to Smail🐌📮")
-	fmt.Fprintf(w, "Your friendly optimization journey begins")
-}
-
-*/
-
-
 // This is where our program starts
-
 func main() {
 	// print message when we start
 

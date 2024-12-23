@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -23,6 +24,10 @@ type ShippingResponse struct {
 
 // handleHome is our root endpoint handler
 func handleHome(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintf(w, "Thank you, Welcome to Smail🐌📮")
+	fmt.Fprintf(w, "Your friendly optimization journey begins")
+
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
