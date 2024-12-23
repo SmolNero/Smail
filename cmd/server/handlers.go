@@ -19,10 +19,10 @@ type ShippingRequest struct {
 // RESPONSE STRUCTURE
 
 type ShippingResponse struct {
-	EstimatedCost float64   `json:"estimated_cost"`
-	DeliveryDays  int       `json:"delivery_days"`
-	ServiceType   string    `json:"service_type"`
-	Timestamp     time.Time `json:"timestamp"`
+	EstimatedCost float64   `json:"estimated_cost"` // Price (with decimals)
+	DeliveryDays  int       `json:"delivery_days"` // Whole number of days
+	ServiceType   string    `json:"service_type"` // Type of shipping service
+	Timestamp     time.Time `json:"timestamp"`   // When calculation was made
 }
 
 // handleHome is our root endpoint handler
