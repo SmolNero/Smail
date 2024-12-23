@@ -1,3 +1,6 @@
+// cmd/server/handlers.go
+// handlers.go contains all request handling logic
+
 package main
 
 import (
@@ -30,17 +33,18 @@ type ShippingResponse struct {
 // r : contains all information aboute the incoming request
 func handleHome(w http.ResponseWriter, r *http.Request) {
 	 // Check if request method is GET
-	if r.Method != http.MethodGet {
+	if r.Method != http.MethodGet {  // If it's not GET(like POST/PUT/DELETE), send an error
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
+		return  // Stop processing if wrong method
 	}
 
+	 // Tell the browser/client we're sending JSON data
 	w.Header().Set("Content-Type","application/json")
 
 	 // Set JSON content type header before writing any response
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Thank you, Welcome to Smail🐌📮 - Your friendly optimization journey begins",
-		"version": "1.0",
+		"version": "1.0",        // The following 3 are our key-value pairs that will become JSON
 		"status":  "healthy",
 	})
 }
@@ -53,12 +57,14 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Parsings incoming JSON request
+	// Try to read the JSON from the request
 	var req ShippingRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return
 	}
-	// Validate request data
+		// Validate request data
+		// Make sure zip codes aren't empty
 	if req.FromZipCode == "" || req.ToZipCode == "" {
 		http.Error(w, "Missing zip code", http.StatusBadRequest)
 		return
