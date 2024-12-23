@@ -25,7 +25,7 @@ type ShippingResponse struct {
 // handleHome is our root endpoint handler
 func handleHome(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed"), http.StatusMethodNotAllowed
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -65,7 +65,7 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 		EstimatedCost: 15.99, // Placeholder
 		DeliveryDays:  3,     // Placeholder
 		ServiceType:   "Priority Mail",
-		Timestamp:	   time.Now()
+		Timestamp:	   time.Now(),
 	}
 
 	// Set content type header

@@ -31,7 +31,6 @@ func main() {
 	fmt.Println("Smail🐌📮 - a friendly service" )
 
 	// When someone visits our website (/) show them the home page
-
 	http.HandleFunc("/", handleHome)
 	http.HandleFunc("/api/shipping/calculate", handleShippingCalculate)
 	http.HandleFunc("/health", handleHealthCheck)	
