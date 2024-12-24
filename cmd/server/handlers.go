@@ -4,14 +4,16 @@
 package main
 
 import (
-	"encoding/json" // For working with JSON data
-	"net/http" // for web server functionality
-	"time" //For working with dates/times
-	"strings"
-	"log"
+	"encoding/json" // For working with JSON data - converts Go structs to/from
+	"net/http" // for web server functionality - powers the web server and HTTP handling
+	"time" //For working with dates/times - adds timestamps to responses
+	"strings" //Provides string manipulation functions
+	"log" // Works with datess and times  - Logs messages for debugging or monitoring
 )
 
-// constants for security
+// CONSTANTS for security
+// Prevents excessive data in requests
+// Enforces validation rules (e.g., username length, request size)
 const  (
 	MaxRequestSize = 1024 * 1024 // 1MB max request size
 	MaxUsernameLen = 50
@@ -45,13 +47,11 @@ type ShippingResponse struct {
 	Timestamp     time.Time `json:"timestamp"`   // When calculation was made
 }
 
-
 // validateContentType ensures JSON content type
 func validateContentType(r *http.Request) bool{
 	contentType := r.Header.Get("Content-Type")
 	return strings.Contains(contentType, "application/json")
 }
-
 
 // validateHomeRequest validates home endpoint requests
 func validateHomeRequest(req HomeRequest) []string{
@@ -101,7 +101,6 @@ func validateHomeRequest(req HomeRequest) []string{
 		errors = append(errors, "request_id must be at least 8 characters")
 	}
 
-
 	return errors
 }
 
@@ -121,7 +120,6 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 			"version": "1.0",        // The following 3 are our key-value pairs that will become JSON
 			"status":  "healthy",
 	})
-
 
 	case http.MethodPost, http.MethodPut:
 		// validate content type
