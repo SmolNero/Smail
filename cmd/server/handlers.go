@@ -15,14 +15,16 @@ import (
 // Prevents excessive data in requests
 // Enforces validation rules (e.g., username length, request size)
 const  (
-	MaxRequestSize = 1024 * 1024 // 1MB max request size
-	MaxUsernameLen = 50
-	MinUsernameLen = 3
-	MaxContentLen = 1000
-	MinRequestIDLen = 8 
+	MaxRequestSize = 1024 * 1024 // 1MB max request size - This prevents someone from sending a massive JSON payload that could crash server
+	MaxUsernameLen = 50 // Username cant be longer than 50 characters - prevents massive usernames that could mess up UI
+	MinUsernameLen = 3 // be at least 3 char - prevents empty or tiny usernames that could be used
+	MaxContentLen = 1000 // 1000 chars is roughly 200 words - prevents memory issues from huge messages
+	MinRequestIDLen = 8  // IDs must be at least 8 characters - helps maintain uniqueness in tracking requests
  )
 
 // ShippingRequest represents our API response
+// Represents incoming data for the "home" endpoint
+// Defines the shape of expected JSON input for validation
 type HomeRequest struct{
 	UserName string `json:"username"`
 	MessageType string `json:"message_type"`
@@ -32,6 +34,9 @@ type HomeRequest struct{
 	Timestamp string `json:"timestamp"`
 }
 
+
+// Represents data for shipping calculations
+// Ensures incoming shipping request data is structured correctly
 type ShippingRequest struct {
 	FromZipCode string  `json:"from_zip"` // where package STARTS
 	ToZipCode   string  `json:"to_zip"`   // Where package goes
@@ -39,7 +44,7 @@ type ShippingRequest struct {
 	PackageType string  `json:"package_type"`   //type of package
 }
 
-// RESPONSE STRUCTURE
+// c STRUCTURE
 type ShippingResponse struct {
 	EstimatedCost float64   `json:"estimated_cost"` // Price (with decimals)
 	DeliveryDays  int       `json:"delivery_days"` // Whole number of days
