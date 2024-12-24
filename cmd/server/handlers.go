@@ -7,17 +7,17 @@ import (
 	"encoding/json" // For working with JSON data
 	"net/http" // for web server functionality
 	"time" //For working with dates/times
-	"string"
+	"strings"
 	"log"
 )
-
 
 // constants for security
 const  (
 	MaxRequestSize = 1024 * 1024 // 1MB max request size
-	MaxUserNameLen = 50
-	MinUserbaneLen = 3
-	MaxContentLen = 8
+	MaxUsernameLen = 50
+	MinUsernameLen = 3
+	MaxContentLen = 1000
+	MinRequestIDLen = 8 
  )
 
 // ShippingRequest represents our API response
@@ -38,7 +38,6 @@ type ShippingRequest struct {
 }
 
 // RESPONSE STRUCTURE
-
 type ShippingResponse struct {
 	EstimatedCost float64   `json:"estimated_cost"` // Price (with decimals)
 	DeliveryDays  int       `json:"delivery_days"` // Whole number of days
@@ -63,10 +62,9 @@ func validateHomeRequest(req HomeRequest) []string{
 		errors = append(errors, "username is required")
 	} else if len(req.UserName) < MinUsernameLen {
 		errors = append(errors, "username must be at least 3 characters")
-	} else if len(req.UserNames) > MaxUsernameLen {
-		erros = append(errors, "useername must not exceed 50 characters")
+	} else if len(req.UserName) > MaxUsernameLen {
+		errors = append(errors, "useername must not exceed 50 characters")
 	}
-
 
 	//MessageType validation
 	if req.MessageType != "" {
@@ -78,7 +76,6 @@ func validateHomeRequest(req HomeRequest) []string{
 				break
 			}
 		}
-
 		if !isValid {
 			errors = append(errors, "message_type must be one of: greeting, update, feedback")
 		}
@@ -87,12 +84,11 @@ func validateHomeRequest(req HomeRequest) []string{
 	// content validation
 	if len(req.Content) > MaxContentLen {
 		errors = append(errors, "content must not exceed 1000 characters") 
-
 	}
 
 	// Email validation (basic)
 	if req.Email != "" {
-		if !strings.Contains(req.Email, "@") || !strings.Contains(req.Email, ""){
+		if !strings.Contains(req.Email, "@") || !strings.Contains(req.Email, "."){
 			errors = append(errors, "invalid email format")
 
 	}
@@ -101,7 +97,7 @@ func validateHomeRequest(req HomeRequest) []string{
 	//RequestID Validation
 	if req.RequestID == "" {
 		errors = append(errors, "request_id is required")
-	} else if len(req.RequestID) < MinRequestIDlen {
+	} else if len(req.RequestID) < MinRequestIDLen {
 		errors = append(errors, "request_id must be at least 8 characters")
 	}
 
@@ -109,32 +105,95 @@ func validateHomeRequest(req HomeRequest) []string{
 	return errors
 }
 
-
 // handleHome is our root endpoint handler
 // w : where we write our response to the user
 // r : contains all information aboute the incoming request
 func handleHome(w http.ResponseWriter, r *http.Request) {
-	 // Check if request method is GET
-	if r.Method != http.MethodGet {  // If it's not GET(like POST/PUT/DELETE), send an error
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return  // Stop processing if wrong method
-	}
-
+	w.Header().Set("Content-Type", "application/json")
+	// log the request
+	log.Printf("Received %s request from %s", r.Method, r.RemoteAddr)
+	
+	switch r.Method {
+	case http.MethodGet:
 	 // Set JSON content type header before writing any response
-	json.NewEncoder(w).Encode(map[string]string{
-		"message": "Thank you, Welcome to Smail🐌📮 - Your friendly optimization journey begins",
-		"version": "1.0",        // The following 3 are our key-value pairs that will become JSON
-		"status":  "healthy",
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "Thank you, Welcome to Smail🐌📮 - Your friendly optimization journey begins",
+			"version": "1.0",        // The following 3 are our key-value pairs that will become JSON
+			"status":  "healthy",
 	})
+
+
+	case http.MethodPost, http.MethodPut:
+		// validate content type
+		if !validateContentType(r) {
+			http.Error(w, "Invalid Content-Type", http.StatusBadRequest)
+			return
+		}
+
+		//check request size
+		if r.ContentLength > MaxRequestSize {
+			http.Error(w, "Request too large", http.StatusRequestEntityTooLarge)
+			return
+		}
+
+		var req HomeRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+			return
+		}
+
+		// Validate request
+		errors := validateHomeRequest(req)
+		if len(errors) > 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"status": "errors",				
+				"errors": errors,
+			})
+			return
+		}
+
+		//Process valid request
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"status":"Success",
+			"method": r.Method,
+			"username": req.UserName,
+			"message_type": req.MessageType,
+			"email": req.RequestID,
+			"received_at": time.Now(),
+		})
+
+
+	default:
+		log.Printf("Blocked %s request from %s", r.Method, r.RemoteAddr)
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+
+
+	}
 }
 
 // func handleShippingCalculate calculates shipping costs
 func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
-	 // Set content type header
+	 // Set JSON content type
 	w.Header().Set("Content-Type", "application/json")
 
+	log.Printf("Received shipping calculation request %s", r.RemoteAddr)
+
 	if r.Method != http.MethodPost {
+		log.Printf("Blocked %s request for shipping calculation from %x", r.Method, r.RemoteAddr)
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// validate content type
+	if !validateContentType(r) {
+		http.Error(w, "Invalid Content-Type", http.StatusBadRequest)
+		return
+	}
+
+	//Check request size
+	if r.ContentLength > MaxRequestSize {
+		http.Error(w, "Request too large", http.StatusRequestEntityTooLarge)
 		return
 	}
 
@@ -169,10 +228,10 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 
 }
-
-func handleHealthCheck(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(map[string]string{
-		"status": "healthy",
-		"time":   time.Now().String(),
+	func handleHealthCheck(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type","application/json")
+		json.NewEncoder(w).Encode(map[string]string{
+			"status": "healthy",
+			"time":   time.Now().String(),
 	})
 }
