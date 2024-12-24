@@ -11,6 +11,8 @@ import (
 	"log" // Works with datess and times  - Logs messages for debugging or monitoring
 )
 
+
+
 // CONSTANTS for security
 // Prevents excessive data in requests
 // Enforces validation rules (e.g., username length, request size)
@@ -26,9 +28,10 @@ const  (
 // Represents incoming data for the "home" endpoint
 // Defines the shape of expected JSON input for validation
 type HomeRequest struct{
-	UserName string `json:"username"`
-	MessageType string `json:"message_type"`
-	Content string `json:"content"`
+	// Tag tells Go how to convert this field when working with JSON
+	UserName string `json:"username"` /// User ident storage- Will be validated against our MinUsernameLen and MaxUsernameLen consts
+	MessageType string `json:"message_type"`//Allows to handle diff requests differently (i.e. greet, update, feedback) - this will be validated agains a list of allowed ,essages
+	Content string `json:"content"` // Main message content - stores messsage text :: con -> MaxContentLen
 	Email string `json:"email"`
 	RequestID string `json:"requesst_id"`
 	Timestamp string `json:"timestamp"`
