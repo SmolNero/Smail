@@ -107,26 +107,25 @@ func validateHomeRequest(req HomeRequest) []string{
 }
 
 	// RequestID Validation
-	// Ensures RequestID is provided
-	if req.RequestID == "" {
+	if req.RequestID == "" {		// Ensures RequestID is provided
 		errors = append(errors, "request_id is required")
-	} else if len(req.RequestID) < MinRequestIDLen { 	// Checks min length
+	} else if len(req.RequestID) < MinRequestIDLen { 	// Checks min length requirements
 		errors = append(errors, "request_id must be at least 8 characters")
 	}
 
-	return errors
+	return errors	// Returns all collected errors (if any)
 }
 
 // handleHome is our root endpoint handler
-// w : where we write our response to the user
-// r : contains all information aboute the incoming request
-func handleHome(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+// w : is like a piece of paper where we'll write our response
+// r : contains all the information about the visitor's request
+func handleHome(w http.ResponseWriter, r *http.Request) { 	// Consider this func handles visitors to our websites /home 
+	w.Header().Set("Content-Type", "application/json")	  // Tells the browser what kind of response we re sending
 	// log the request
-	log.Printf("Received %s request from %s", r.Method, r.RemoteAddr)
+	log.Printf("Received %s request from %s", r.Method, r.RemoteAddr) // What request we received (GET, POST, etc) :: Who sent it (IP ADDRESS)
 	
-	switch r.Method {
-	case http.MethodGet:
+	switch r.Method {	// Checks the type of request the visitor made (like if viewing or submitting form) - multiway fork
+	case http.MethodGet:	// for GET requests (when someone just visits the page)
 	 // Set JSON content type header before writing any response
 		json.NewEncoder(w).Encode(map[string]string{
 			"message": "Thank you, Welcome to Smail🐌📮 - Your friendly optimization journey begins",
@@ -134,14 +133,15 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 			"status":  "healthy",
 	})
 
-	case http.MethodPost, http.MethodPut:
+	case http.MethodPost, http.MethodPut:	// For POST or PUT requests (when someone submits data)
 		// validate content type
-		if !validateContentType(r) {
+		if !validateContentType(r) {	// Checks if we re getting JSON data - if NOT, it will be REJECTED
 			http.Error(w, "Invalid Content-Type", http.StatusBadRequest)
 			return
 		}
 
 		//check request size
+		// This makes sure the request isn't too big, like refusing a package that's too heavy.
 		if r.ContentLength > MaxRequestSize {
 			http.Error(w, "Request too large", http.StatusRequestEntityTooLarge)
 			return
@@ -187,7 +187,6 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 	 // Set JSON content type
 	w.Header().Set("Content-Type", "application/json")
-
 	log.Printf("Received shipping calculation request %s", r.RemoteAddr)
 
 	if r.Method != http.MethodPost {
@@ -239,6 +238,8 @@ func handleShippingCalculate(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 
 }
+
+	
 	func handleHealthCheck(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type","application/json")
 		json.NewEncoder(w).Encode(map[string]string{
