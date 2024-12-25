@@ -32,9 +32,9 @@ type HomeRequest struct{
 	UserName string `json:"username"` /// User ident storage- Will be validated against our MinUsernameLen and MaxUsernameLen consts
 	MessageType string `json:"message_type"`//Allows to handle diff requests differently (i.e. greet, update, feedback) - this will be validated agains a list of allowed ,essages
 	Content string `json:"content"` // Main message content - stores messsage text :: con -> MaxContentLen
-	Email string `json:"email"`
-	RequestID string `json:"requesst_id"`
-	Timestamp string `json:"timestamp"`
+	Email string `json:"email"` // Contact information :: Must contain @ - needs special validation email
+	RequestID string `json:"requesst_id"` // FOR REQ TRCKNG - MUST-> MinRequestIDLen req 
+	Timestamp string `json:"timestamp"` // REC REQS - helps track timing and patterns
 }
 
 
