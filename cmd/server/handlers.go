@@ -30,11 +30,11 @@ const  (
 type HomeRequest struct{
 	// Tag tells Go how to convert this field when working with JSON
 	UserName string `json:"username"` /// User ident storage- Will be validated against our MinUsernameLen and MaxUsernameLen consts
-	MessageType string `json:"message_type"`//Allows to handle diff requests differently (i.e. greet, update, feedback) - this will be validated agains a list of allowed ,essages
+	MessageType string `json:"message_type"` //Allows to handle diff requests differently (i.e. greet, update, feedback) - this will be validated agains a list of allowed ,essages
 	Content string `json:"content"` // Main message content - stores messsage text :: con -> MaxContentLen
-	Email string `json:"email"` // Contact information :: Must contain @ - needs special validation email
+	Email string `json:"email"`    // Contact information :: Must contain @ - needs special validation email
 	RequestID string `json:"requesst_id"` // FOR REQ TRCKNG - MUST-> MinRequestIDLen req 
-	Timestamp string `json:"timestamp"` // REC REQS - helps track timing and patterns
+	Timestamp string `json:"timestamp"`  // REC REQS - helps track timing and patterns
 }
 
 
@@ -55,57 +55,62 @@ type ShippingResponse struct {
 	Timestamp     time.Time `json:"timestamp"`   // When calculation was made
 }
 
-// validateContentType ensures JSON content type
-func validateContentType(r *http.Request) bool{
-	contentType := r.Header.Get("Content-Type")
-	return strings.Contains(contentType, "application/json")
+// validateContentType ensures JSON content type - sercurity function that checks IDs
+func validateContentType(r *http.Request) bool{ // Declares our functions
+	contentType := r.Header.Get("Content-Type") // Gets the content-Types from the request headers
+	return strings.Contains(contentType, "application/json") // Checks if we have JSON content
 }
 
 // validateHomeRequest validates home endpoint requests
-func validateHomeRequest(req HomeRequest) []string{
-	var errors []string
+// Consider this function as a form validator
+// Func takes a HomeRequest and returns a slice of strings (for error messages)
+func validateHomeRequest(req HomeRequest) []string{  
+	var errors []string // initializes an empty slice of collect errors
 
 	// username validation
-	if req.UserName == "" {
+	if req.UserName == "" {		// IF username is empty
 		errors = append(errors, "username is required")
-	} else if len(req.UserName) < MinUsernameLen {
+	} else if len(req.UserName) < MinUsernameLen {		// ELSE Meets min (3 characters)
 		errors = append(errors, "username must be at least 3 characters")
-	} else if len(req.UserName) > MaxUsernameLen {
+	} else if len(req.UserName) > MaxUsernameLen {		// Does not exceed length (50 characters)
 		errors = append(errors, "useername must not exceed 50 characters")
 	}
 
 	//MessageType validation
+	// Only validates if MessageType is provided
 	if req.MessageType != "" {
-		validTypes := []string{"greeting", "update", "feedback"}
+		validTypes := []string{"greeting", "update", "feedback"}  // Checks against allowed types: "greeting", "update", "Feedback'
 		isValid := false
-		for _, t := range validTypes {
+		for _, t := range validTypes {	// Loops through them to check if the provided type matches
 			if req.MessageType == t {
 				isValid = true
 				break
 			}
 		}
-		if !isValid {
+		if !isValid {	// Adds error if the type isn't in our allowed list - isValid = false
 			errors = append(errors, "message_type must be one of: greeting, update, feedback")
 		}
 	}
 
 	// content validation
+	// Length check to prevent overly long messages - MaxContentLen as out limit
 	if len(req.Content) > MaxContentLen {
 		errors = append(errors, "content must not exceed 1000 characters") 
 	}
 
 	// Email validation (basic)
 	if req.Email != "" {
-		if !strings.Contains(req.Email, "@") || !strings.Contains(req.Email, "."){
-			errors = append(errors, "invalid email format")
+		if !strings.Contains(req.Email, "@") || !strings.Contains(req.Email, "."){ // checks for the pressence pf @ - checks for pressence of '.'
+			errors = append(errors, "invalid email format") // adds an error if either is missing
 
 	}
 }
 
-	//RequestID Validation
+	// RequestID Validation
+	// Ensures RequestID is provided
 	if req.RequestID == "" {
 		errors = append(errors, "request_id is required")
-	} else if len(req.RequestID) < MinRequestIDLen {
+	} else if len(req.RequestID) < MinRequestIDLen { 	// Checks min length
 		errors = append(errors, "request_id must be at least 8 characters")
 	}
 
