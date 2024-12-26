@@ -8,6 +8,46 @@
 *.so
 *.dylib
 
+
+
+# Python
+__pycache__/ # Python creates these directories for compiled bytecode
+*.py[cod]	 # Matches .pyc .pyo and .pyd files - compiled  Python files
+*$py.class 	 # Python compiled files on Jython (Python on Java)
+*.so         # Compiled C/C++ shared libraries
+
+lib/ 	      # Libray directories
+lib64/ 		  # 64-bit library directories 
+parts/		  # Buildout-specific directories
+sdist/ 		  # Source distribution directory
+var/		  # Variable data
+wheels/		  # Built wheel files
+*egg-info/.   # Package Metadata
+.installed.cfg. 	# Buildout configuration
+*.egg 				# Egg packages
+
+# VENV
+venv/				# Standard virtual enviroment directory
+env/ 				# Alternate virtual enviroements
+ENV/ 				#  Another common virtual enviroment
+
+
+# IDE/editor
+.idea/              # PyCharm
+.vscode/           # VS Code
+*.swp              # Vim
+*.swo              # Vim
+*.sublime-workspace # Sublime Text
+*.sublime-project   # Sublime Text
+
+
+#OSfile
+.DS_STORE 		    # Mac OS X directory attributes
+Thumb.db 			# Windows thumbnail cache
+
+*.log 				# Log files
+.venv				# Enviroment
+
 # Test binary, built with `go test -c`
 *.test
 
