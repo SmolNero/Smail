@@ -9,6 +9,7 @@ import (
 	"time" //For working with dates/times - adds timestamps to responses
 	"strings" //Provides string manipulation functions
 	"log" // Works with datess and times  - Logs messages for debugging or monitoring
+	"github.com/SmolNero/Smail/pkg/models"
 )
 
 
