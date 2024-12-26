@@ -1,4 +1,4 @@
-[x]		smail/
+[]		smail/
 [x]		├── cmd/
 [x]		│   └── server/
 [x]		│       ├── main.go        # Application entry point
