@@ -127,4 +127,4 @@
 []		├── .env.example       # Environment template
 []		├── docker-compose.yml # Docker composition
 []		├── Dockerfile         # Main dockerfile
-[]		└── README.md          # Project documentation
+[x]		└── README.md          # Project documentation
