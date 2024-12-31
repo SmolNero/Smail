@@ -4,7 +4,7 @@
 [x]		│       ├── main.go        # Application entry point
 [x]		│       ├── routes.go      # Route configurations
 [x]		│       └── handlers.go    # HTTP request handlers
-[]		│
+[x]		│
 [x]		├── pkg/                   # Go packages
 [x]		│   ├── models/           # Shared data structures
 []		│   │   ├── response.go   # API response structures
@@ -55,10 +55,10 @@
 []		│   │
 [x]		│   ├── usps/            # USPS integration
 [x]		│   │   ├── client/
-[]		│   │   │   ├── client.go    # USPS API client
-[]		│   │   │   ├── auth.go      # Authentication
-[]		│   │   │   ├── request.go   # Request building
-[]		│   │   │   └── response.go  # Response parsing
+TODO:[]		│   │   │   ├── client.go    # USPS API client 
+TODO:[]		│   │   │   ├── auth.go      # Authentication 
+TODO:[]		│   │   │   ├── request.go   # Request building
+TODO:[]		│   │   │   └── response.go  # Response parsing
 [x]		│   │   ├── rates/
 []		│   │   │   ├── calculator.go     # Rate calculation
 []		│   │   │   ├── domestic.go       # Domestic rates
