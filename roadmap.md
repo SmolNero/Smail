@@ -55,10 +55,10 @@
 []		│   │
 [x]		│   ├── usps/            # USPS integration
 [x]		│   │   ├── client/
-TODO:[]		│   │   │   ├── client.go    # USPS API client 
-TODO:[]		│   │   │   ├── auth.go      # Authentication 
-TODO:[]		│   │   │   ├── request.go   # Request building
-TODO:[]		│   │   │   └── response.go  # Response parsing
+[TODO:]		│   │   │   ├── client.go    # USPS API client 
+[TODO]		│   │   │   ├── auth.go      # Authentication 
+[TODO]		│   │   │   ├── request.go   # Request building
+[TODO]		│   │   │   └── response.go  # Response parsing
 [x]		│   │   ├── rates/
 []		│   │   │   ├── calculator.go     # Rate calculation
 []		│   │   │   ├── domestic.go       # Domestic rates
