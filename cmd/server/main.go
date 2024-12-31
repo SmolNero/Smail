@@ -7,8 +7,6 @@ import (
 	"fmt" // printing is for printing things
 	"log" // log is for printing important messages
 	"net/http" // lets create web servers
-	"github.com/SmolNero/Smail/pkg/usps"
-    "github.com/SmolNero/Smail/pkg/models"
 )
 
 // This function runs when someone visits our website
