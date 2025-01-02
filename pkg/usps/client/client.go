@@ -22,17 +22,21 @@ type Client struct {
 	httpClient	*http.Client	//	HTTP client for making requests  - reusable HTTP client
 }
 
-// function declaration: Takes pointer to ClientConfigm retures a pointer to a client & an error
+ // function declaration: Takes pointer to ClientConfigm retures a pointer to a client & an error
 // NewClient creates and returns a new USPS API client
 func NewClient (config *ClientConfig) (*Client, error) {
-		// Validation block: check if UserID exists
+		 // Validation block: check if UserID exists
 		// config.UserID accessess the UserID field through the pointer
 	if config.UserID == "" {	
+		// Return nil (no client) and an error
 		retrurn nil, fmt.Error("USPS UserID is required")
 	}
 
-	// Set default timeout if not specified
+	 // Timeout configuration block
+	// If timeout is zero (default values)
 	if config.Timeout == 0 {
+		 // 'time.Second' is a Duration constant (1 second)
+		// 30 * time.Second = 30 seconds
 		config.Timeout == 30 * time.Second
 	}
 
