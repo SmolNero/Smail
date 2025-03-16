@@ -6,27 +6,32 @@
 ![Go Version](https://img.shields.io/badge/go-1.21+-00ADD8.svg)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow.svg)
 
+# 🚧 Work in Progress 🚧
+
+**This project is in an early stage of development and is not ready for production use. Breaking changes are likely, and documentation may be incomplete. Use at your own risk! Contributions and feedback are welcome.**
+
 Smail is an AI-enhanced shipping intelligence platform designed to give small businesses and e-commerce sellers the same shipping optimization capabilities as major retailers. Built with Go and enhanced with machine learning capabilities, Smail makes intelligent shipping decisions accessible to everyone.
 
-## 🚀 Features
-
 ### Phase 1 - Core Features
+
 - USPS Rate Calculator
+
   - Real-time shipping rate comparisons
   - Service level analysis
   - Historical data tracking
-
 - Optimization Engine
+
   - Best shipping day calculations
   - Batch size recommendations
   - Holiday calendar integration
-
 - Smart Dashboard
+
   - Cost visualization
   - Shipping recommendations
   - Alert system
 
 ### Phase 2 - Advanced Features (Coming Soon)
+
 - Weather impact analysis
 - Dynamic batch optimization
 - Real-time rate monitoring
@@ -58,6 +63,7 @@ go run cmd/server/*.go
 ## 🔧 Configuration
 
 1. Copy the example environment file:
+
 ```bash
 cp .env.example .env
 ```
@@ -85,4 +91,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Go Community
 
 ---
+
 *Smail 🐌📮 is currently in active development. Features and documentation will be regularly updated.*
